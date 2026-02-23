@@ -118,4 +118,54 @@ SDK 会自动尝试在生产环境中获取支持支付方式的 H2H 落地信�
 
 ---
 
+## 沙盒 (Sandbox) 响应示例
+
+### 巴西 (BRL)
+**交易:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "BRL", "paymentMethod": {"name": "PIX", "paymentMethodTag": "PIX"}}
+```
+**Paywall:**
+```json
+{"uid": "...", "amount": 1500, "currency": "BRL", "totalAmount": 15, "form": {"action": "https://api-sandbox.payretailers.com/payments/v2/public/paywalls/landing/..."}}
+```
+
+### 墨西哥 (MXN)
+**交易:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "USD", "billing": {"currency": "MXN", "amount": 1000}}
+```
+
+### 哥伦比亚 (COP)
+**交易:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 10000, "currency": "COP"}
+```
+
+### 智利 (CLP)
+**交易:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "CLP"}
+```
+
+### 阿根廷 (ARS)
+**交易:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "ARS"}
+```
+
+### 秘鲁 (PEN)
+**交易:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "PEN"}
+```
+
+### 厄瓜多尔 (USD)
+**交易:**
+```json
+{"uid": "...", "status": "FAILED", "message": "TRANSACTION_MIN_AMOUNT", "currency": "USD"}
+```
+
+---
+
 由 Caio Vinicius 用 ♥ 制作。

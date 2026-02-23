@@ -118,4 +118,54 @@ The SDK automatically attempts to fetch H2H landing information for supported pa
 
 ---
 
+## Sandbox Response Examples
+
+### Brazil (BRL)
+**Transaction:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "BRL", "paymentMethod": {"name": "PIX", "paymentMethodTag": "PIX"}}
+```
+**Paywall:**
+```json
+{"uid": "...", "amount": 1500, "currency": "BRL", "totalAmount": 15, "form": {"action": "https://api-sandbox.payretailers.com/payments/v2/public/paywalls/landing/..."}}
+```
+
+### Mexico (MXN)
+**Transaction:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "USD", "billing": {"currency": "MXN", "amount": 1000}}
+```
+
+### Colombia (COP)
+**Transaction:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 10000, "currency": "COP"}
+```
+
+### Chile (CLP)
+**Transaction:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "CLP"}
+```
+
+### Argentina (ARS)
+**Transaction:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "ARS"}
+```
+
+### Peru (PEN)
+**Transaction:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "PEN"}
+```
+
+### Ecuador (USD)
+**Transaction:**
+```json
+{"uid": "...", "status": "FAILED", "message": "TRANSACTION_MIN_AMOUNT", "currency": "USD"}
+```
+
+---
+
 Made with ♥ by Caio Vinicius.

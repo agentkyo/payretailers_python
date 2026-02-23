@@ -20,7 +20,7 @@ transaction = client.create_transaction(
     customer_first_name="Test",
     customer_last_name="Colombia",
     customer_email="test_co@example.com",
-    customer_personal_id="123456789",
+    customer_personal_id="1.032.456.789",
     payment_method_tag="CREDIT_CARD"
 )
 print(f"Transaction Created: {transaction}")
@@ -36,6 +36,6 @@ paywall = client.create_paywall(
     customer_first_name="Test",
     customer_last_name="Colombia Paywall",
     customer_email="test_co_pw@example.com",
-    customer_personal_id="123456789"
+    customer_personal_id="1.032.456.789"
 )
 print(f"Paywall Created: {paywall}")

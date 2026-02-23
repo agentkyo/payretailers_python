@@ -118,4 +118,54 @@ El SDK intenta automáticamente obtener información de aterrizaje H2H para los 
 
 ---
 
+## Ejemplos de Respuesta en Sandbox
+
+### Brasil (BRL)
+**Transacción:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "BRL", "paymentMethod": {"name": "PIX", "paymentMethodTag": "PIX"}}
+```
+**Paywall:**
+```json
+{"uid": "...", "amount": 1500, "currency": "BRL", "totalAmount": 15, "form": {"action": "https://api-sandbox.payretailers.com/payments/v2/public/paywalls/landing/..."}}
+```
+
+### México (MXN)
+**Transacción:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "USD", "billing": {"currency": "MXN", "amount": 1000}}
+```
+
+### Colombia (COP)
+**Transacción:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 10000, "currency": "COP"}
+```
+
+### Chile (CLP)
+**Transacción:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "CLP"}
+```
+
+### Argentina (ARS)
+**Transacción:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "ARS"}
+```
+
+### Perú (PEN)
+**Transacción:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "PEN"}
+```
+
+### Ecuador (USD)
+**Transacción:**
+```json
+{"uid": "...", "status": "FAILED", "message": "TRANSACTION_MIN_AMOUNT", "currency": "USD"}
+```
+
+---
+
 Hecho con ♥ por Caio Vinicius.

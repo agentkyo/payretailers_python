@@ -118,4 +118,54 @@ SDK автоматически пытается получить информа�
 
 ---
 
+## Примеры ответов в песочнице (Sandbox)
+
+### Бразилия (BRL)
+**Транзакция:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "BRL", "paymentMethod": {"name": "PIX", "paymentMethodTag": "PIX"}}
+```
+**Paywall:**
+```json
+{"uid": "...", "amount": 1500, "currency": "BRL", "totalAmount": 15, "form": {"action": "https://api-sandbox.payretailers.com/payments/v2/public/paywalls/landing/..."}}
+```
+
+### Мексика (MXN)
+**Транзакция:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "USD", "billing": {"currency": "MXN", "amount": 1000}}
+```
+
+### Колумбия (COP)
+**Транзакция:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 10000, "currency": "COP"}
+```
+
+### Чили (CLP)
+**Транзакция:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "CLP"}
+```
+
+### Аргентина (ARS)
+**Транзакция:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "ARS"}
+```
+
+### Перу (PEN)
+**Транзакция:**
+```json
+{"uid": "...", "status": "PENDING", "amount": 1000, "currency": "PEN"}
+```
+
+### Эквадор (USD)
+**Транзакция:**
+```json
+{"uid": "...", "status": "FAILED", "message": "TRANSACTION_MIN_AMOUNT", "currency": "USD"}
+```
+
+---
+
 Сделано с ♥ от Caio Vinicius.
