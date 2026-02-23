@@ -29,7 +29,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync
 
 uv run brazil.py // example 
-
 ```
 
 ## Quick Start

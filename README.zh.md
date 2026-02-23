@@ -24,7 +24,11 @@
 ## 安装
 
 ```bash
-pip install requests pydantic httpx tenacity
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+uv sync
+
+uv run brazil.py // example 
 ```
 
 ## 快速开始

@@ -24,7 +24,11 @@ Open Source Python SDK, разработанный для ускорения и�
 ## Установка
 
 ```bash
-pip install requests pydantic httpx tenacity
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+uv sync
+
+uv run brazil.py // example 
 ```
 
 ## Быстрый старт

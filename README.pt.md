@@ -24,7 +24,11 @@ Pronto para produção, type-safe e totalmente documentado.
 ## Instalação
 
 ```bash
-pip install requests pydantic httpx tenacity
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+uv sync
+
+uv run brazil.py // example 
 ```
 
 ## Começo Rápido
