@@ -1,6 +1,9 @@
 import os
 import uuid
 from payretailers import PayRetailersEcuador
+from dotenv import load_dotenv
+
+load_dotenv()
 
 client = PayRetailersEcuador(
     shop_id=os.getenv("SHOP_ID"),

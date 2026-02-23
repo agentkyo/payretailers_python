@@ -9,6 +9,9 @@ from .logger import logger
 from .exceptions import get_exception_for_code, APIConnectionError, AuthenticationError, PayRetailersError
 from .models import TransactionRequest, PaywallRequest, PayoutRequest
 import time
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BLACKLIST_FILE = "payretailers_h2h_cache.json"
 BLACKLIST_DURATION = 86400  # 24 hours in seconds
@@ -34,13 +37,8 @@ class PayRetailersClient:
         self.sandbox = sandbox
         self.base_url = self.SANDBOX_URL if sandbox else self.PRODUCTION_URL
         self.auth_header = self._generate_auth_header()
-
-        # Configure Logger Level
         logger.setLevel(log_level)
-
         self.max_retries = max_retries
-
-        # Initialize HTTPX Client for connection pooling
         self.client = httpx.Client(
             base_url=self.base_url,
             headers={
@@ -98,9 +96,7 @@ class PayRetailersClient:
         """
         Sends HTTP request with retry logic using Tenacity.
         """
-        full_url_for_logging = f"{self.base_url}{endpoint}" # URL construction for logging, client uses base_url internally
-
-        # Define retry strategy
+        full_url_for_logging = f"{self.base_url}{endpoint}"
         retry_strategy = Retrying(
             stop=stop_after_attempt(self.max_retries),
             wait=wait_exponential(multiplier=1, min=4, max=10),
@@ -131,41 +127,28 @@ class PayRetailersClient:
                         else:
                             raise ValueError(f"Invalid HTTP method: {method}")
 
-                        # Raise for 5xx errors to trigger retry.
-                        # For 4xx errors, we don't want to retry, so we let them pass this check.
                         if 500 <= response.status_code < 600:
-                            response.raise_for_status() # This will raise httpx.HTTPStatusError
-
-                        # If we reach here, the request was successful (2xx) or a non-retryable 4xx.
-                        # Break out of the retry loop.
+                            response.raise_for_status()
                         break
                     except httpx.HTTPStatusError as e:
-                        # If it's a 5xx error, tenacity will catch it and retry.
-                        # If it's a 4xx error, we don't want to retry, so we re-raise it
-                        # to be caught by the outer try-except block for _handle_error.
                         if 400 <= e.response.status_code < 500:
-                            response = e.response # Store the response for error handling
-                            raise # Re-raise to exit retry loop and be handled by outer block
-                        raise # Re-raise 5xx for tenacity to catch and retry
+                            response = e.response
+                            raise
+                        raise
         except (httpx.RequestError, httpx.TimeoutException) as e:
-            # This block runs if all retries for connection/timeout errors are exhausted
+
             logger.error(f"Request to {full_url_for_logging} failed after {self.max_retries} attempts due to connection error: {e}")
             raise APIConnectionError(f"PayRetailers API Unreachable: {e}")
         except httpx.HTTPStatusError as e:
-            # This block runs if a 4xx error occurred and was re-raised from inside the retry loop,
-            # or if a 5xx error persisted after all retries.
-            response = e.response # Ensure response is set for _handle_error
+            response = e.response
             logger.error(f"Request to {full_url_for_logging} failed with status {response.status_code} after {self.max_retries} attempts: {e}")
-            # The _handle_error will be called below for this response.
-
         if response is None:
-            # This should ideally not happen if all paths lead to a response or an exception.
             raise APIConnectionError("No response received from PayRetailers API after all attempts.")
 
         logger.info(f"Response Status Code: {response.status_code}")
         logger.info(f"Response Body: {response.text}")
 
-        if not response.is_success: # httpx has is_success
+        if not response.is_success:
             self._handle_error(response)
 
         return response.json()
@@ -176,7 +159,7 @@ class PayRetailersClient:
             error_data = response.json()
             code = error_data.get("code") or error_data.get("error_code") or str(response.status_code)
             message = error_data.get("message") or error_data.get("description") or response.text
-        except ValueError: # json.JSONDecodeError for httpx
+        except ValueError:
             code = str(response.status_code)
             message = response.text
 
@@ -203,7 +186,6 @@ class PayRetailersClient:
         response = self._send_request("POST", "transactions", payload=payload)
 
         status = response.get("status")
-        # Check for specific string status from API
         if isinstance(status, str) and status.upper() == "MISSING_INFO":
             logger.warning(
                 "Transaction created with status 'MISSING_INFO'. "
@@ -212,12 +194,7 @@ class PayRetailersClient:
                 "to increase conversion rates."
             )
 
-
-
-        # H2H Integration Logic
         payment_method = payload.get("paymentMethodTagName")
-
-        # Transaction Status Validation
         is_transaction_valid = False
         if isinstance(status, str):
             status_upper = status.upper()
@@ -225,10 +202,7 @@ class PayRetailersClient:
                 is_transaction_valid = True
             elif status_upper == "FAILED":
                 logger.error(f"Transaction failed creation. Status: {status}. Message: {response.get('message')}")
-
-        # Only proceed if we have a payment method and it's not blacklisted (or expired) AND transaction is valid
         if is_transaction_valid and payment_method and not self.sandbox:
-             # Check blacklist
             is_blacklisted = False
             if payment_method in self.blacklist:
                 expiry = self.blacklist[payment_method]
@@ -236,7 +210,6 @@ class PayRetailersClient:
                     is_blacklisted = True
                     logger.debug(f"Payment method '{payment_method}' is in H2H blacklist. Skipping landing info.")
                 else:
-                    # Expired, remove from blacklist to retry
                     del self.blacklist[payment_method]
                     self._save_blacklist_cache()
 
@@ -247,7 +220,6 @@ class PayRetailersClient:
                         landing_info = self.get_landing_info(transaction_id)
                         if landing_info:
                              response["h2h"] = landing_info
-                             # If we succeed, ensure it is NOT in blacklist (clean up if it worked now)
                              if payment_method in self.blacklist:
                                  del self.blacklist[payment_method]
                                  self._save_blacklist_cache()

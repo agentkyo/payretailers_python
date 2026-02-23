@@ -1,6 +1,9 @@
 import os
 import uuid
 from payretailers import PayRetailersBrazil
+from dotenv import load_dotenv
+
+load_dotenv()
 
 client = PayRetailersBrazil(
     shop_id=os.getenv("SHOP_ID"),
@@ -9,7 +12,6 @@ client = PayRetailersBrazil(
     sandbox=True
 )
 
-# No need to specify currency (defaults to BRL) or country (defaults to BR)
 transaction = client.create_transaction(
     amount=1000,
     description="Transaction Test Brazil",

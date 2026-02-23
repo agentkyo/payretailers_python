@@ -82,7 +82,6 @@ class Customer(BaseModel):
             try:
                 validate_personal_id(country.value, personal_id)
             except ValidationError as e:
-                # Re-raise as ValueError so Pydantic catches it if not custom
                 raise ValueError(str(e))
         return self
 
