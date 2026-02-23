@@ -163,7 +163,24 @@ SDK 会自动尝试在生产环境中获取支持支付方式的 H2H 落地信�
 ### 厄瓜多尔 (USD)
 **交易:**
 ```json
-{"uid": "...", "status": "FAILED", "message": "TRANSACTION_MIN_AMOUNT", "currency": "USD"}
+{"uid": "...", "status": "PENDING", "amount": 100000, "currency": "USD"}
+```
+
+---
+
+## 错误处理
+
+### TRANSACTION_MIN_AMOUNT
+此错误表示用于创建交易的金额低于最低执行值。SDK 为此提供了一个特定的异常：`TransactionMinAmountError`。
+
+```python
+from payretailers.exceptions import TransactionMinAmountError
+
+try:
+    client.create_transaction(...)
+except TransactionMinAmountError as e:
+    print(f"错误: {e.message}") 
+    # 输出: ... (The amount sent to create the transaction is below the minimum practiced value).
 ```
 
 ---

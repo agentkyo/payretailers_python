@@ -1,3 +1,5 @@
+from typing import Optional
+
 class PayRetailersError(Exception):
     """Base exception for PayRetailers SDK."""
     def __init__(self, message, code=None, status_code=None):
@@ -26,6 +28,12 @@ class PayoutCreationError(PayRetailersError):
     """Raised when payout cannot be created."""
     pass
 
+class TransactionMinAmountError(ValidationError):
+    """Raised when the transaction amount is below the minimum allowed."""
+    def __init__(self, message, code="TRANSACTION_MIN_AMOUNT", status_code=None):
+        detailed_message = f"{message} (The amount sent to create the transaction is below the minimum practiced value)."
+        super().__init__(detailed_message, code=code, status_code=status_code)
+
 # Mapping of specific API error codes to Exception classes
 ERROR_CODE_MAP = {
     "001_VALIDATION_ERROR": ValidationError,
@@ -35,13 +43,13 @@ ERROR_CODE_MAP = {
     "INVALID_AMOUNT": ValidationError,
     "PAYMENT_METHOD_NOT_ALLOWED": TransactionCreationError,
     "TRANSACTION_MAX_AMOUNT": ValidationError,
-    "TRANSACTION_MIN_AMOUNT": ValidationError,
+    "TRANSACTION_MIN_AMOUNT": TransactionMinAmountError,
     "TRANSACTION_INVALID_FIELD_COUNTRY": ValidationError,
     "TRANSACTION_INVALID_FIELD_CURRENCY": ValidationError,
     # Add more mappings as needed from documentation
 }
 
-def get_exception_for_code(code: str, message: str, status_code: int = None) -> PayRetailersError:
+def get_exception_for_code(code: str, message: str, status_code: Optional[int] = None) -> PayRetailersError:
     """Factory function to return specific exception based on error code."""
     cls = ERROR_CODE_MAP.get(code, PayRetailersError)
     return cls(message, code=code, status_code=status_code)

@@ -163,7 +163,24 @@ O SDK tenta automaticamente buscar informações de landing H2H para métodos de
 ### Equador (USD)
 **Transação:**
 ```json
-{"uid": "...", "status": "FAILED", "message": "TRANSACTION_MIN_AMOUNT", "currency": "USD"}
+{"uid": "...", "status": "PENDING", "amount": 100000, "currency": "USD"}
+```
+
+---
+
+## Tratamento de Erros
+
+### TRANSACTION_MIN_AMOUNT
+Este erro indica que o valor enviado para criar a transação está abaixo do valor mínimo praticado. O SDK fornece uma exceção específica para isso: `TransactionMinAmountError`.
+
+```python
+from payretailers.exceptions import TransactionMinAmountError
+
+try:
+    client.create_transaction(...)
+except TransactionMinAmountError as e:
+    print(f"Erro: {e.message}") 
+    # Saída: ... (The amount sent to create the transaction is below the minimum practiced value).
 ```
 
 ---

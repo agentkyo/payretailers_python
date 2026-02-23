@@ -163,7 +163,24 @@ The SDK automatically attempts to fetch H2H landing information for supported pa
 ### Ecuador (USD)
 **Transaction:**
 ```json
-{"uid": "...", "status": "FAILED", "message": "TRANSACTION_MIN_AMOUNT", "currency": "USD"}
+{"uid": "...", "status": "PENDING", "amount": 100000, "currency": "USD"}
+```
+
+---
+
+## Error Handling
+
+### TRANSACTION_MIN_AMOUNT
+This error indicates that the amount sent to create the transaction is below the minimum practiced value. The SDK provides a specific exception for this: `TransactionMinAmountError`.
+
+```python
+from payretailers.exceptions import TransactionMinAmountError
+
+try:
+    client.create_transaction(...)
+except TransactionMinAmountError as e:
+    print(f"Error: {e.message}") 
+    # Output: ... (The amount sent to create the transaction is below the minimum practiced value).
 ```
 
 ---

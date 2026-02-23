@@ -163,7 +163,24 @@ El SDK intenta automáticamente obtener información de aterrizaje H2H para los 
 ### Ecuador (USD)
 **Transacción:**
 ```json
-{"uid": "...", "status": "FAILED", "message": "TRANSACTION_MIN_AMOUNT", "currency": "USD"}
+{"uid": "...", "status": "PENDING", "amount": 100000, "currency": "USD"}
+```
+
+---
+
+## Manejo de Errores
+
+### TRANSACTION_MIN_AMOUNT
+Este error indica que el monto enviado para crear la transacción está por debajo del valor mínimo practicado. El SDK proporciona una excepción específica para esto: `TransactionMinAmountError`.
+
+```python
+from payretailers.exceptions import TransactionMinAmountError
+
+try:
+    client.create_transaction(...)
+except TransactionMinAmountError as e:
+    print(f"Error: {e.message}") 
+    # Salida: ... (The amount sent to create the transaction is below the minimum practiced value).
 ```
 
 ---

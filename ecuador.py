@@ -13,7 +13,7 @@ client = PayRetailersEcuador(
 )
 
 transaction = client.create_transaction(
-    amount=1000,
+    amount=100000,
     description="Transaction Test Ecuador",
     tracking_id=uuid.uuid4().hex,
     notification_url="https://webhook.site/d6b645c9-6c80-46c1-b2df-4cb5f6310f20",
@@ -29,7 +29,7 @@ status = client.get_transaction(transaction['uid'])
 print(f"Transaction Status: {status}")
 
 paywall = client.create_paywall(
-    amount=1500,
+    amount=150000,
     description="Paywall Test Ecuador",
     tracking_id=uuid.uuid4().hex,
     notification_url="https://webhook.site/d6b645c9-6c80-46c1-b2df-4cb5f6310f20",

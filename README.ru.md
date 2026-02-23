@@ -163,7 +163,24 @@ SDK автоматически пытается получить информа�
 ### Эквадор (USD)
 **Транзакция:**
 ```json
-{"uid": "...", "status": "FAILED", "message": "TRANSACTION_MIN_AMOUNT", "currency": "USD"}
+{"uid": "...", "status": "PENDING", "amount": 100000, "currency": "USD"}
+```
+
+---
+
+## Обработка ошибок
+
+### TRANSACTION_MIN_AMOUNT
+Эта ошибка указывает на то, что сумма, отправленная для создания транзакции, ниже минимально допустимого значения. SDK предоставляет для этого специальное исключение: `TransactionMinAmountError`.
+
+```python
+from payretailers.exceptions import TransactionMinAmountError
+
+try:
+    client.create_transaction(...)
+except TransactionMinAmountError as e:
+    print(f"Ошибка: {e.message}") 
+    # Вывод: ... (The amount sent to create the transaction is below the minimum practiced value).
 ```
 
 ---
